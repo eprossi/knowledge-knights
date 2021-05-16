@@ -28,6 +28,7 @@ knowledge1 = And(
     # it's one of the two but cant be both
     Or(And(AKnight, Not(AKnave)), And(Not(AKnight), AKnave)),
     Or(And(BKnight, Not(BKnave)), And(Not(BKnight), BKnave)),
+    #either AKnight and what he says is true, or AKnave and what he says is false
     Or(And(AKnight,AKnave,BKnave), And(AKnave, Not(And(AKnave,BKnave))))
     )
 
@@ -35,7 +36,17 @@ knowledge1 = And(
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    # it's one of the two but cant be both
+    Or(And(AKnight, Not(AKnave)), And(Not(AKnight), AKnave)),
+    Or(And(BKnight, Not(BKnave)), And(Not(BKnight), BKnave)),
+    #If A is knight says true - they are the same / OR says false
+    Or(And(AKnight,
+           Or(And(AKnight, BKnight),And(AKnave, BKnave))),
+       And(AKnave,Not(Or(And(AKnight, BKnight),And(AKnave, BKnave))))),
+    #same for B - but different kinds
+    Or(And(BKnight,
+           Or(And(AKnight, BKnave),And(AKnave, BKnight))),
+       And(AKnave,Not(Or(And(AKnight, BKnave),And(AKnave, BKnight)))))
 )
 
 # Puzzle 3
@@ -44,7 +55,19 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    # it's one of the two but cant be both
+    Or(And(AKnight, Not(AKnave)), And(Not(AKnight), AKnave)),
+    Or(And(BKnight, Not(BKnave)), And(Not(BKnight), BKnave)),
+    Or(And(CKnight, Not(CKnave)), And(Not(CKnight), CKnave)),
+    #A Knight says true / AKnave Not
+    Or(And(AKnight, Or(AKnight, AKnave)), And(AKnave, Not(Or(AKnight, AKnave)))),
+    #B says that A says... and B says about C
+    Or(And(BKnight,
+           Or(And(AKnight, BKnave),And(AKnave,Not(BKnave))),CKnave),
+       And(BKnave,
+           Not(Or(And(AKnight, BKnave), And(AKnave, Not(BKnave))))),CKnight),
+    #C says ...
+    Or(And(CKnight, AKnight), And(CKnave,AKnave))
 )
 
 
