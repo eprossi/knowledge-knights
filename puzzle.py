@@ -25,8 +25,15 @@ knowledge0 = And(
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    AKnave, BKnave
-)
+    #one of the two but not both
+    Or(
+        And(AKnave, not(AKnight)), And(AKnight, not(AKnave))),
+    Or(
+        And(BKnave, not(BKnight)), And(BKnight, not(BKnave))),
+    # if AKnight what he says is true if AKnave opposite is true
+    Or(
+        And(AKnight,AKnave, BKnave), And(AKnave, Not(AKnave, BKnave)))
+    )
 
 # Puzzle 2
 # A says "We are the same kind."
@@ -53,12 +60,14 @@ def main():
         ("Puzzle 2", knowledge2),
         ("Puzzle 3", knowledge3)
     ]
+    print (puzzles)
     for puzzle, knowledge in puzzles:
         print(puzzle)
         if len(knowledge.conjuncts) == 0:
             print("    Not yet implemented.")
         else:
             for symbol in symbols:
+                print(f'indo testar o simbolo: {symbol}')
                 if model_check(knowledge, symbol):
                     print(f"    {symbol}")
 
