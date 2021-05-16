@@ -61,11 +61,17 @@ knowledge3 = And(
     Or(And(CKnight, Not(CKnave)), And(Not(CKnight), CKnave)),
     #A Knight says true / AKnave Not
     Or(And(AKnight, Or(AKnight, AKnave)), And(AKnave, Not(Or(AKnight, AKnave)))),
-    #B says that A says... and B says about C
-    Or(And(BKnight,
-           Or(And(AKnight, BKnave),And(AKnave,Not(BKnave))),CKnave),
-       And(BKnave,
-           Not(Or(And(AKnight, BKnave), And(AKnave, Not(BKnave))))),CKnight),
+
+    # #B says that A says... and B says about C
+    # Or(And(BKnight,
+    #        Or(And(AKnight, BKnave),And(AKnave,Not(BKnave))),CKnave),
+    #    And(BKnave,
+    #        Not(Or(And(AKnight, BKnave), And(AKnave, Not(BKnave))))),CKnight),
+
+    # using the sentences above for B says - did not result in a solution (I assumed that A could have said something
+    #earlier than what is reported here. However, given that it didn't work, I'm assuming now that I know from
+    #the knoledge base that A did not say what B claims. Therefore I know B is a Knave.
+    And(BKnave, Not(CKnave)),
     #C says ...
     Or(And(CKnight, AKnight), And(CKnave,AKnave))
 )
