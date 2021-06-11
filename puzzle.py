@@ -59,22 +59,40 @@ knowledge3 = And(
     Or(And(AKnight, Not(AKnave)), And(Not(AKnight), AKnave)),
     Or(And(BKnight, Not(BKnave)), And(Not(BKnight), BKnave)),
     Or(And(CKnight, Not(CKnave)), And(Not(CKnight), CKnave)),
-    #A Knight says true / AKnave Not
-    Or(And(AKnight, Or(AKnight, AKnave)), And(AKnave, Not(Or(AKnight, AKnave)))),
+    #A said either phrase. If AKnight either is right. If AKnave said either, but both False
+    Or(And(AKnight, Or(AKnight, AKnave)),And(AKnave, Or(Not(AKnight), Not(AKnave)))),
 
-    # #B says that A says... and B says about C
-    # Or(And(BKnight,
-    #        Or(And(AKnight, BKnave),And(AKnave,Not(BKnave))),CKnave),
-    #    And(BKnave,
-    #        Not(Or(And(AKnight, BKnave), And(AKnave, Not(BKnave))))),CKnight),
+    # B says that A says B is a Knave
+    # B is Knight or Knave
+    # If B Knight, A DID SAY that B is Knave. / If A is Knight - B is Knave => inconsistent
+    # If B Knight, A DID SAY that B is Knave. / If A is Knave - B is Knight = OK
+    # If B Knave, A DID NOT SAY or A said B is Knight ?? I'll assume that A DID SAY B is Knight.
+    # So if B is Knave, A said B is Knight. If A is Knight, B is Knight => incosistent
+    # If B is Knave, A said B is Knight. If A is Knave, B is Knave => OK
 
-    # using the sentences above for B says - did not result in a solution (I assumed that A could have said something
-    #earlier than what is reported here. However, given that it didn't work, I'm assuming now that I know from
-    #the knoledge base that A did not say what B claims. Therefore I know B is a Knave.
-    And(BKnave, Not(CKnave)),
-    #C says ...
-    Or(And(CKnight, AKnight), And(CKnave,AKnave))
-)
+    Or(
+        And(BKnight,
+            Or(
+                And(AKnight,BKnave),
+                And(AKnave,Not(BKnave)))),
+
+        And(BKnave,
+            Or(
+                And(AKnight,Not(BKnave)),
+                And(AKnave, Not(Not(BKnave)))))
+            ),
+
+    #  B says CKnave
+    Or(
+        And(BKnight, CKnave),
+        And(BKnave, Not(CKnave))
+    ),
+
+    #C says AKnight
+    Or(
+        And(CKnight, AKnight),
+        And(CKnave,Not(AKnight))
+    ))
 
 
 def main():
