@@ -1,3 +1,4 @@
+#final version 11/jun/21
 from logic import *
 
 AKnight = Symbol("A is a Knight")
