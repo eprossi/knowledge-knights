@@ -66,7 +66,6 @@ knowledge3 = And(
     # B is Knight or Knave
     # If B Knight, A DID SAY that B is Knave. / If A is Knight - B is Knave => inconsistent
     # If B Knight, A DID SAY that B is Knave. / If A is Knave - B is Knight = OK
-    # If B Knave, A DID NOT SAY or A said B is Knight ?? I'll assume that A DID SAY B is Knight.
     # So if B is Knave, A said B is Knight. If A is Knight, B is Knight => incosistent
     # If B is Knave, A said B is Knight. If A is Knave, B is Knave => OK
 
