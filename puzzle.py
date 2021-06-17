@@ -56,43 +56,35 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # it's one of the two but cant be both
-    Or(And(AKnight, Not(AKnave)), And(Not(AKnight), AKnave)),
-    Or(And(BKnight, Not(BKnave)), And(Not(BKnight), BKnave)),
-    Or(And(CKnight, Not(CKnave)), And(Not(CKnight), CKnave)),
-    #A said either phrase. If AKnight either is right. If AKnave said either, but both False
-    Or(And(AKnight, Or(AKnight, AKnave)),And(AKnave, Or(Not(AKnight), Not(AKnave)))),
+                # Brisc fez o basico - either knight or knave but not both
+                And(Or(AKnight,AKnave),Not(And(AKnight,AKnave))),
+                 And(Or(BKnight,BKnave),Not(And(BKnight,BKnave))),
+                 And(Or(CKnight,CKnave),Not(And(CKnight,CKnave))),
 
-    # B says that A says B is a Knave
-    # B is Knight or Knave
-    # If B Knight, A DID SAY that B is Knave. / If A is Knight - B is Knave => inconsistent
-    # If B Knight, A DID SAY that B is Knave. / If A is Knave - B is Knight = OK
-    # So if B is Knave, A said B is Knight. If A is Knight, B is Knight => incosistent
-    # If B is Knave, A said B is Knight. If A is Knave, B is Knave => OK
+                 Or (  #A says he is a knight
+                    And(
+                        Implication(AKnight,AKnight),
+                        Implication(AKnave,Not(AKnight)),
+                        Not(BKnight),
+                        BKnave,
+                        Implication(BKnight,CKnave),
+                        Implication(BKnave,Not(CKnave)),
+                        Implication(CKnight,AKnight),
+                        Implication(CKnave,Not(AKnight))
+                    ),  #A says he is a knave - Never really happens
+                    And(
+                        Implication(AKnight,AKnave),
+                        Implication(AKnave,Not(AKnave)),
+                        BKnight,
+                        Not(BKnave),
+                        Implication(BKnight,CKnave),
+                        Implication(BKnave,Not(CKnave)),
+                        Implication(CKnight,AKnight),
+                        Implication(CKnave,Not(AKnight))
+                    )
+                 )
 
-    Or(
-        And(BKnight,
-            Or(
-                And(AKnight,BKnave),
-                And(AKnave,Not(BKnave)))),
-
-        And(BKnave,
-            Or(
-                And(AKnight,Not(BKnave)),
-                And(AKnave, Not(Not(BKnave)))))
-            ),
-
-    #  B says CKnave
-    Or(
-        And(BKnight, CKnave),
-        And(BKnave, Not(CKnave))
-    ),
-
-    #C says AKnight
-    Or(
-        And(CKnight, AKnight),
-        And(CKnave,Not(AKnight))
-    ))
+)
 
 
 def main():
